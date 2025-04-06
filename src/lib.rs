@@ -48,6 +48,20 @@ pub fn is(stream: Stream) -> bool {
     unsafe { libc::isatty(fd) != 0 }
 }
 
+#[cfg(target_os = "helenos")]
+pub fn is(stream: Stream) -> bool {
+    extern crate libc;
+
+    unsafe {
+        let handle = match stream {
+            Stream::Stdout => libc::stdout,
+            Stream::Stderr => libc::stderr,
+            Stream::Stdin => libc::stdin,
+        };
+        libc::isatty(libc::fileno(handle)) != 0
+    }
+}
+
 /// returns true if this is a tty
 #[cfg(target_os = "hermit")]
 pub fn is(stream: Stream) -> bool {

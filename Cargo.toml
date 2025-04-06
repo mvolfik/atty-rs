@@ -14,7 +14,7 @@ exclude = ["/.travis.yml", "/appveyor.yml"]
 [badges]
 travis-ci = { repository = "softprops/atty" }
 
-[target.'cfg(unix)'.dependencies]
+[target.'cfg(any(unix, target_os = "helenos"))'.dependencies]
 libc = { version = "0.2", default-features = false }
 
 [target.'cfg(target_os = "hermit")'.dependencies]
@@ -24,3 +24,5 @@ hermit-abi = "0.1.6"
 version = "0.3"
 features = ["consoleapi", "processenv", "minwinbase", "minwindef", "winbase"]
 
+[patch.crates-io]
+libc = { git = "https://github.com/mvolfik/rust-libc.git", branch = "helenos-v0.2" }
